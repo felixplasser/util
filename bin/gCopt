@@ -1,0 +1,50 @@
+#!/bin/bash
+# extract information out of Columbus geometry optimizations
+
+if [ $# -eq 0 ]
+then
+   dirs='.'
+else
+   dirs=$*
+fi
+
+red=0 # show reduced output
+ttail="cat"
+for dir in $dirs
+do 
+   if [ -d $dir ]
+   then
+      echo "*** $dir ***"
+      if [ -f $dir/runls ]
+      then
+       if [ $red -eq 0 ]
+       then
+         egrep -a 'Iteration|Calculation in directory|finished gdiis.x|total m| wt 0\.| wt 1\.|not conv' $dir/runls | $ttail
+       else
+         egrep -a 'Iteration|Calculation in directory|finished gdiis.x|total m' $dir/runls | $ttail
+       fi
+       grep -A 3 'run-hybrid.pl: //// ENERG' $dir/runls | $ttail
+      elif [ -f $dir/optimize.out ]
+      then
+         grep -A 3 'run-hybrid.pl: //// ENERG' $dir/optimize.out | $ttail
+      fi 
+   echo
+   elif [ ${dir} == '-red' ]
+   then
+      red=1
+   elif [ ${dir} == '-tail' ]
+   then
+      ttail=" tail --lines=5"
+   fi
+done
+
+echo ' +++ The following runs (if any) are not converged: +++ '
+for dir in $dirs
+do
+   if [ -d $dir ]
+   then
+     grep -Ls 'gradient calculation converged' $dir/runls
+     grep -Ls 'Converged!' $dir/optimize.out
+   fi
+done
+
