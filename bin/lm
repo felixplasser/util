@@ -1,0 +1,21 @@
+#!/bin/bash
+
+sdir=`pwd`
+if [ $# -ne 0 ] ;then
+   for dir in $*
+   do
+       cd $sdir/$dir
+       $0
+#      less $dir/moldyn.log*
+   done
+else
+#   for file in escf.out ricc2.out RUNDIR/ricc2.out runls job.last moldyn.log RUNDIR/runls RUNDIR/moldyn.log qchem.out
+   for file in escf.out ricc2.out runls* job.last moldyn.log qchem.out molcas.log adf.out ve.out output.lis tera.out gaussian.log orca.out
+   do
+     if [ -f $file ]
+     then
+        less -S $file
+#        exit
+     fi
+   done
+fi
