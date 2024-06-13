@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "$0 <find options>"
+echo "Remove files"
+echo "  e.g. rmi -size +10M"
+echo
+
+[[ $# -eq 0 ]] && exit 1
+
+echo "*** List of files:"
+echo
+find . "$@"
+echo
+
+echo "Delete these files? (y/n)"
+read DELCHK
+
+if [ "$DELCHK" == "y" ]
+then
+   echo 'Deleting ...'
+   find . "$@" -exec rm -v {} \;
+else
+   echo 'Stopping.'
+fi
