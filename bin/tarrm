@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo "Archive and remove a list of directories or files"
+echo "$0 <name> [<name2> ...]"
+
+date
+for name
+do
+  NN=${name%*/}
+  cmd="tar -czf $NN.tgz $NN"
+  echo "executing: $cmd"
+  $cmd || exit 3
+  echo "Finished tar"
+  date
+  echo
+
+  echo "Removing ..."
+  rm -r $NN
+done
