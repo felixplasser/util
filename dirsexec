@@ -1,0 +1,19 @@
+#!/bin/bash
+# execute $1 in the directories specified
+   # dirsexec <command> <dir1> <dir2> ...
+echo "syntax: dirsexec <command[&]> <dir1> [<dir2> ...]"
+
+sdir=`pwd`
+comm=$1
+shift
+for dir in $@
+do
+   #[[ "$dir" = "-par" ]] && comm="$comm &" -> just add to <command>
+   if [ -d $sdir/$dir ] ;then
+      echo "** $sdir/$dir"
+      cd -P $sdir/$dir
+      eval $comm || exit 1
+   else
+      echo "** Skipping $dir. Not a directory. "
+   fi
+done
