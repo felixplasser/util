@@ -31,7 +31,10 @@ quotes = [
 ("Did you know that ... the number of atoms within us, is about a million times the number of stars in the entire visible universe.", "Frank Wilczek"),
 ("Space-time tells matter how to move; matter tells space-time how to bend.", "John Wheeler"),
 ("Did you know that ... the primary properties of matter, from which all its other properties can be derived are these three: mass, charge, spin.", "Frank Wilczek"),
-("I haven't failed. I have just found 10,000 ways that won't work.", "Thomas A. Edison")
+("I haven't failed. I have just found 10,000 ways that won't work.", "Thomas A. Edison"),
+("Falsehood flies, and truth comes limping after it", "Jonathan Swift"),
+("Checking your likes is the new smoking", "Bill Maher"),
+("Indeed, few things feel more basic to my experience of adulthood than the vague sense that I’m falling behind, and need to do more, if I’m to stave off an ill-defined catastrophe that might otherwise come crashing down upon my head.", "Oliver Burkeman")
 ]
 
 i = randrange(len(quotes))
