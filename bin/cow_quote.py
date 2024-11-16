@@ -34,7 +34,10 @@ quotes = [
 ("I haven't failed. I have just found 10,000 ways that won't work.", "Thomas A. Edison"),
 ("Falsehood flies, and truth comes limping after it", "Jonathan Swift"),
 ("Checking your likes is the new smoking", "Bill Maher"),
-("Indeed, few things feel more basic to my experience of adulthood than the vague sense that I’m falling behind, and need to do more, if I’m to stave off an ill-defined catastrophe that might otherwise come crashing down upon my head.", "Oliver Burkeman")
+("Indeed, few things feel more basic to my experience of adulthood than the vague sense that I’m falling behind, and need to do more, if I’m to stave off an ill-defined catastrophe that might otherwise come crashing down upon my head.", "Oliver Burkeman"),
+("nullius in verba - take no on's word for it", "Royal Society"),
+("You are the endpoint of an unbroken, billion-element chain of organisms each arising from the preceding generation: your parents, grandparents, great-grandparents, and so on, reaching all the way back to the last universal common ancestor of all life.", "Christof Koch"),
+("There is no bad weather - there is only bad clothing and bad attitude.", "Christof Koch")
 ]
 
 i = randrange(len(quotes))
