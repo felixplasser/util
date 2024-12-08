@@ -26,23 +26,26 @@ quotes = [
 ("Not only is the Universe stranger than we think, it is stranger than we can think.", "Werner Heisenberg"),
 ("Questions you cannot answer are usually far better for you than answers you cannot question.", "Yuval Noah Harari"),
 ("To this day, I remain impressed by the ability of Britons of all ages and social backgrounds to get genuinely excited by the prospect of a hot beverage.", "Bill Bryson"),
-("The theory of quantum electrodynamics describes Nature as absurd from the point of view of common sense. And it agrees fully with experiment. So I hope you accept Nature as She is—absurd", "Richard Feynman"),
+("The theory of quantum electrodynamics describes Nature as absurd from the point of view of common sense. And it agrees fully with experiment. So I hope you accept Nature as She is—absurd.", "Richard Feynman"),
 ("Did you know that within string theory ... each [elementary particle] would be seen to be made of a single, tiny, oscillating loop of string.", ""),
 ("Did you know that ... the number of atoms within us, is about a million times the number of stars in the entire visible universe.", "Frank Wilczek"),
 ("Space-time tells matter how to move; matter tells space-time how to bend.", "John Wheeler"),
 ("Did you know that ... the primary properties of matter, from which all its other properties can be derived are these three: mass, charge, spin.", "Frank Wilczek"),
 ("I haven't failed. I have just found 10,000 ways that won't work.", "Thomas A. Edison"),
-("Falsehood flies, and truth comes limping after it", "Jonathan Swift"),
+("Falsehood flies, and truth comes limping after it.", "Jonathan Swift"),
 ("Checking your likes is the new smoking", "Bill Maher"),
 ("Indeed, few things feel more basic to my experience of adulthood than the vague sense that I’m falling behind, and need to do more, if I’m to stave off an ill-defined catastrophe that might otherwise come crashing down upon my head.", "Oliver Burkeman"),
 ("nullius in verba - take no on's word for it", "Royal Society"),
 ("You are the endpoint of an unbroken, billion-element chain of organisms each arising from the preceding generation: your parents, grandparents, great-grandparents, and so on, reaching all the way back to the last universal common ancestor of all life.", "Christof Koch"),
-("There is no bad weather - there is only bad clothing and bad attitude.", "Christof Koch")
+("There is no bad weather - there is only bad clothing and bad attitude.", "Christof Koch"),
+("A crystal is like a class of children arranged for drill, but standing at ease, so that while the class as a whole has regularity both in time and space, each individual child is a little fidgety!", "Kathleen Lonsdale"),
+("Do fewer things. Work at a natural pace. Obsess over quality.", "Cal Newport")
 ]
 
 i = randrange(len(quotes))
 try:
-    print("%s --%s"%(quotes[i]))
+    print(quotes[i][0])
+    #print("%s --%s"%(quotes[i]))
 except:
     print(i, quotes[i])
     raise
