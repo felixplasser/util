@@ -40,7 +40,12 @@ quotes = [
 ("You are the endpoint of an unbroken, billion-element chain of organisms each arising from the preceding generation: your parents, grandparents, great-grandparents, and so on, reaching all the way back to the last universal common ancestor of all life.", "Christof Koch"),
 ("There is no bad weather - there is only bad clothing and bad attitude.", "Christof Koch"),
 ("A crystal is like a class of children arranged for drill, but standing at ease, so that while the class as a whole has regularity both in time and space, each individual child is a little fidgety!", "Kathleen Lonsdale"),
-("Do fewer things. Work at a natural pace. Obsess over quality.", "Cal Newport")
+("Do fewer things. Work at a natural pace. Obsess over quality.", "Cal Newport"),
+("The quest for truth should always supersede one's ego defensive desire to be proven right.","Gad Saad"),
+("Tact and diplomacy are fine in international relations, in politics, perhaps even in business; in science only one thing matters, that is the facts.","Hans J. Eysenck"),
+("There are only two types of theories: those that divide the world into two types of theories, and those that do not.",""),
+("But the peculiar evil of silencing the expression of an opinion is, that it is robbing the human race; posterity as well as the existing generation; those who dissent from the opinion, still more than those who hold it.","John Stuart M    ill"),
+("The easiest way to solve a problem is to deny that it exists.", "Isaac Asimov")
 ]
 
 def cowsay(cowstr, wd=40):

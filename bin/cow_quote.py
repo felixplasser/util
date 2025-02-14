@@ -47,6 +47,8 @@ quotes = [
 ("The easiest way to solve a problem is to deny that it exists.", "Isaac Asimov")
 ]
 
+# NOTE: this is the older version
+
 i = randrange(len(quotes))
 try:
     print(quotes[i][0])
