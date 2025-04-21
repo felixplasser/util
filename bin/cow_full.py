@@ -62,9 +62,9 @@ def cowsay(cowstr, wd=40):
         outstr += left.pop() + line.center(wd) + right.pop() + "\n"
     outstr += ' ' + wd * '-'
     outstr += """
-        \   ^__^
-         \  (OO)\_______
-            (__)\       )\\/\\
+        \\   ^__^
+         \\  (OO)\\_______
+            (__)\\       )\\/\\
                 ||----w |
                 ||     ||
     """
