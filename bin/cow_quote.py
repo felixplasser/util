@@ -44,7 +44,10 @@ quotes = [
 ("Tact and diplomacy are fine in international relations, in politics, perhaps even in business; in science only one thing matters, that is the facts.","Hans J. Eysenck"),
 ("There are only two types of theories: those that divide the world into two types of theories, and those that do not.",""),
 ("But the peculiar evil of silencing the expression of an opinion is, that it is robbing the human race; posterity as well as the existing generation; those who dissent from the opinion, still more than those who hold it.","John Stuart Mill"),
-("The easiest way to solve a problem is to deny that it exists.", "Isaac Asimov")
+("The easiest way to solve a problem is to deny that it exists.", "Isaac Asimov"),
+("Nothing that is vast enters into the life of mortals without a curse", "Sophocles"),
+("That you feel something to be right may have its cause in your never having thought much about yourself and in your blindly having accepted what has been labeled right since your childhood.", "Friedrich Nietzsche"),
+("It is the incomplete revolutions which are remembered; the fate of those which triumph is to be taken for granted.", "Tom Holland")
 ]
 
 # NOTE: this is the older version
