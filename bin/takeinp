@@ -1,0 +1,63 @@
+#!/bin/bash
+# For a failed job: delete all output files and take the files out of the folder input.
+sdir=`pwd`
+DODIFF=1
+
+
+if [ $# -ne 0 ] ;then
+   if [ $1 == "-f" ]
+   then
+     DODIFF=0
+     echo "-f: not performing diff command"
+     shift
+   fi
+fi
+
+if [ $# -ne 0 ] ;then
+   dirs=$*
+else
+   dirs='.'
+fi
+
+#echo "Restoring the following directories: $dirs"
+
+for dir in $dirs
+do
+  cd $sdir/$dir
+  echo "*** restoring $dir"
+  if [ -d input ] ;then
+   [ -h RUNDIR ] && rm -vr `ls -l RUNDIR | cut -d '>' -f 2`
+   [ -h WORK ]   && rm -vr `ls -l WORK   | cut -d '>' -f 2`
+
+   for del_dir in WORK COL_restart COL_in LISTINGS MOLDEN COSMO GRADIENTS MOCOEFS RESTART GEOMS POTENTIAL molden RESULTS DEBUG INFO_RESTART TEMP SAVEDIR plots  NDOs  NOs  NTOs  Omega TRD scr restart output_data QCSCRATCH qchem.out.plots
+   do
+      [ -d $del_dir ] && rm -r $del_dir
+   done
+
+   for del_file in runc.error ..molcas.unlink.lst
+   do
+      [ -f input/$del_file ] && rm -v input/$del_file
+   done
+
+   if [ $DODIFF -eq 1 ]
+   then
+    for fil in `ls input`
+    do
+     idiff=`diff -q input/$fil $fil`
+     if [ "$idiff" != "" ];then
+        echo $idiff
+        cp -i $fil input
+     fi
+    done
+   fi
+
+   [ -f "info.txt" ] && cp -iv info.txt input
+
+   rm *
+
+   mv -i input/* .
+   rmdir input
+  else
+   echo 'No dir input'
+  fi
+done
