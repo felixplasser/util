@@ -49,7 +49,8 @@ quotes = [
 ("Nothing that is vast enters into the life of mortals without a curse", "Sophocles"),
 ("That you feel something to be right may have its cause in your never having thought much about yourself and in your blindly having accepted what has been labeled right since your childhood.", "Friedrich Nietzsche"),
 ("It is the incomplete revolutions which are remembered; the fate of those which triumph is to be taken for granted.", "Tom Holland"),
-("The fact that we live at the bottom of a deep gravity well, on the surface of a gas covered planet going around a nuclear fireball 90 million miles away and think this to be normal is obviously some indication of how skewed our perspective tends to be.", "Douglas Adams")
+("The fact that we live at the bottom of a deep gravity well, on the surface of a gas covered planet going around a nuclear fireball 90 million miles away and think this to be normal is obviously some indication of how skewed our perspective tends to be.", "Douglas Adams"),
+("The only way to know what’s happening in the world is to wade into cesspools on X, dodge 10 conspiracy theories, and emerge victorious with one nugget of actual true information.", "Nellie Bowles")
 ]
 
 def cowsay(cowstr, wd=40):
