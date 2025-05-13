@@ -34,3 +34,20 @@ fi
 EOF
 ###
 chmod +x sync.bash
+
+### Create sync-part script ###
+sleep 0.1
+###
+cat << EOF > "$DIR/sync-part.bash"
+#!/bin/bash
+
+rsync -auvz --exclude='QCSCRATCH' --exclude='*.tmp' --exclude='WORK' --max-size=5MB $NODE:SCRATCH/$NAME/ . || exit 1
+
+if [ "\$1" = "-d" ]
+then
+     ssh $NODE "rm -rv SCRATCH/$NAME" || exit 2
+     rm sync.bash
+fi
+EOF
+###
+chmod +x sync-part.bash

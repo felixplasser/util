@@ -1,0 +1,6 @@
+#/bin/bash
+# Repack and compress HDF5 files
+
+echo "Compressing files ..."
+find . -name '*.h5' -ls -execdir h5repack -f GZIP=5 {} {}.r \; || exit 1
+find . -name '*.h5' -execdir rm -v {} \;
