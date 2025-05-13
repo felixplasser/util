@@ -1,6 +1,16 @@
 #/bin/bash
 # Repack and compress HDF5 files
 
+h5repack -V || exit 1
+
+FILES=`find . -name '*.h5'`
+
 echo "Compressing files ..."
-find . -name '*.h5' -ls -execdir h5repack -f GZIP=5 {} {}.r \; || exit 1
-find . -name '*.h5' -execdir rm -v {} \;
+for f in $FILES
+do
+   echo
+   echo "Compresssing $f ..."
+   ls -lh $f
+   h5repack -f GZIP=5 $f $f.r && rm -v $f
+   ls -lh $f.r
+done
