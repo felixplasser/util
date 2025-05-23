@@ -12,8 +12,8 @@ xmin = 2.0
 xshift = 0.0 #0.4
 width = 0.015
 oformat='% 10.5f'
-prop_list = ['J', 'f', 'f_ED', 'f_VD', 'f_sec', 'r_V', 'r_mix']
-do_plot = False
+prop_list = ['J', 'f', 'f_ED', 'f_VD', 'f_sec', 'r_V', 'r_mix', 'f_ex']
+do_plot = True
 ###
 
 def parse_tprop(prop, rfile, states, fac=1):
@@ -122,7 +122,7 @@ if do_plot:
 
     sopt = spectrum.spec_options('spectrum.in')
     sopt['ana_files'] = ['gMEu_summ.txt']
-    sopt.spec = spectrum.spectrum(200,xmax,xmin,width,2,['gMEu_summ.txt'])
+    sopt.spec = spectrum.spectrum(200,xmax,xmin,width,1,2,['gMEu_summ.txt'])
     sopt['weight'] = 1
     sopt['restr'] = False
     sopt['normalize'] = False
