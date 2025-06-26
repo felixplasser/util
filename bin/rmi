@@ -7,9 +7,14 @@ echo
 
 [[ $# -eq 0 ]] && exit 1
 
+FILES=`find . "$@"` || exit 1
+
 echo "*** List of files:"
 echo
-find . "$@"
+for F in $FILES
+do
+	echo $F
+done
 echo
 
 echo "Delete these files? (y/n)"
@@ -18,7 +23,7 @@ read DELCHK
 if [ "$DELCHK" == "y" ]
 then
    echo 'Deleting ...'
-   find . "$@" -exec rm -v {} \;
+   rm -v $FILES
 else
    echo 'Stopping.'
 fi
