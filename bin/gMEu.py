@@ -7,9 +7,9 @@ Extract data from an OpenMolcas computation on Europium.
 iname='molcas.log'
 refstate = 50
 oscfac = 1.E7
-xmax = 2.9
-xmin = 2.0
-xshift = 0.0 #0.4
+xshift = 0.4
+xmax = 2.9 - xshift
+xmin = 2.0 - xshift
 width = 0.015
 oformat='% 10.5f'
 prop_list = ['J', 'f', 'f_ED', 'f_VD', 'f_sec', 'r_V', 'r_mix', 'f_ex']
@@ -17,8 +17,12 @@ do_plot = True
 ###
 
 def parse_tprop(prop, rfile, states, fac=1):
-    for i in range(15):
+    for i in range(4):
         line = next(rfile)
+    while(True):
+        line = next(rfile)
+        if '---' in line:
+            break
     while(True):
         line = next(rfile)
         if '---' in line:
@@ -75,7 +79,8 @@ while(True):
     elif '++ Circular Dichroism - mixed' in line and 'SO states' in line:
         parse_tprop('r_mix', rfile, states, 1.E3)
 
-    elif 'Total transition strengths for the second-order expansion of the wave vector (SO states)' in line:
+    elif 'Total transition strengths for the second-order expansion of the wave vector (SO states)' in line or\
+         'Second-order contribution to the transition strengths (SO states)' in line:
         parse_tprop('f_sec', rfile, states, oscfac)
 
     elif 'Isotropic transition moment strengths (SO states)' in line:
