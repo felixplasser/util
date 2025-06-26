@@ -8,6 +8,7 @@ echo
 [[ $# -eq 0 ]] && exit 1
 
 FILES=`find . "$@"` || exit 1
+[[ "x$FILES" == "x" ]] && exit 0
 
 echo "*** List of files:"
 echo
