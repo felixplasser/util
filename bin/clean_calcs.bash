@@ -11,5 +11,5 @@ rmi -name '*.gbw'
 rmi -name '*.densities'
 
 # Turbomole
-rmi -name 'CC*'
+rmi -name 'CC*--*'
 rmi -name '*.cao'
