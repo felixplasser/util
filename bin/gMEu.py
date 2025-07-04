@@ -3,18 +3,26 @@
 Extract data from an OpenMolcas computation on Europium.
 """
 
+import sys
+from theodore import units
+
 # This could be done as user input
 iname='molcas.log'
 refstate = 50
 oscfac = 1.E7
-xshift = 0.4
-xmax = 2.9 - xshift
+xshift = 0.35
+xmax = 3.3 - xshift
 xmin = 2.0 - xshift
 width = 0.015
 oformat='% 10.5f'
-prop_list = ['J', 'f', 'f_ED', 'f_VD', 'f_sec', 'r_V', 'r_mix', 'f_ex']
+prop_list = ['J', 'Omega', 'f', 'A', 'f_ED', 'f_VD', 'f_sec', 'f_ex']
+#prop_list = ['J', 'Omega', 'f', 'A', 'f_ED', 'f_VD', 'f_sec', 'r_V', 'r_mix', 'f_ex']
+f_list = ['f_ED', 'f_sec']
 do_plot = True
 ###
+
+if len(sys.argv) > 1:
+    f_list = sys.argv[1:]
 
 def parse_tprop(prop, rfile, states, fac=1):
     for i in range(4):
@@ -40,13 +48,8 @@ def parse_tprop(prop, rfile, states, fac=1):
 
 states = [{} for ind in range(refstate)]
 for state in states:
-    state['f']     = 0.
-    state['f_ED']  = 0.
-    state['f_VD']  = 0.
-    state['f_sec'] = 0.
-    state['f_ex']  = 0.
-    state['r_V']   = 0.
-    state['r_mix'] = 0.
+    for prop in prop_list:
+        state[prop] = 0.
 
 rfile = open(iname, 'r')
 
@@ -65,6 +68,10 @@ while(True):
                 states[ind]['J'] = float(words[4])
             except:
                 states[ind]['J'] = -1.
+            try:
+                states[ind]['Omega'] = float(words[5])
+            except:
+                states[ind]['Omega'] = -1.
         refen = float(next(rfile).split()[2])
 
     elif 'Dipole transition strengths (SO states)' in line:
@@ -97,13 +104,15 @@ for prop in prop_list:
 ostr  = hstr + "\n"
 ostr += len(hstr) * '-' + "-\n"    
 
+Apre = 2 / units.constants['c0']**3 / units.time['s']
 J = 0
 mJ = 0
 for state in states[:refstate-1]:
     ostr += "J%i%+i  "%(J, mJ)
     dE = refen - state['en'] - xshift
     ostr += " % 9.5f"%dE
-    state['f'] = state['f_ED'] + state['f_sec']
+    state['f'] = sum(state[ftype] for ftype in f_list)
+    state['A'] = Apre * (dE/units.energy['eV'])**2 * state['f']/oscfac # Einstein coefficient
 
     for prop in prop_list:
         ostr += oformat%(state[prop])
@@ -127,7 +136,7 @@ if do_plot:
 
     sopt = spectrum.spec_options('spectrum.in')
     sopt['ana_files'] = ['gMEu_summ.txt']
-    sopt.spec = spectrum.spectrum(200,xmax,xmin,width,1,2,['gMEu_summ.txt'])
+    sopt.spec = spectrum.spectrum(200,xmin,xmax,width,1,2,['gMEu_summ.txt'])
     sopt['weight'] = 1
     sopt['restr'] = False
     sopt['normalize'] = False
