@@ -3,6 +3,10 @@
 Remove a tag from a latex file.
 """
 
+print("""
+rm_tex-tag.py <file> <tag>
+""")
+
 import sys
 
 fname = sys.argv[1]
