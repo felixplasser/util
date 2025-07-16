@@ -20,7 +20,7 @@ prop_list = ['J', 'Omega', 'f', 'A', 'f_ED', 'f_VD', 'f_sec', 'f_ex']
 #prop_list = ['J', 'Omega', 'f', 'A', 'f_ED', 'f_VD', 'f_sec', 'r_V', 'r_mix', 'f_ex']
 #f_list = ['f_ED', 'f_sec']
 #do_plot = True
-####
+###
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(
