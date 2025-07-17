@@ -3,26 +3,38 @@
 Extract data from an OpenMolcas computation on Europium.
 """
 
-import sys
+import argparse
 from theodore import units
 
-# This could be done as user input
-iname='molcas.log'
-refstate = 50
-oscfac = 1.E7
-xshift = 0.35
-xmax = 3.3 - xshift
-xmin = 2.0 - xshift
-width = 0.015
-oformat='% 10.5f'
 prop_list = ['J', 'Omega', 'f', 'A', 'f_ED', 'f_VD', 'f_sec', 'f_ex']
 #prop_list = ['J', 'Omega', 'f', 'A', 'f_ED', 'f_VD', 'f_sec', 'r_V', 'r_mix', 'f_ex']
-f_list = ['f_ED', 'f_sec']
-do_plot = True
-###
 
-if len(sys.argv) > 1:
-    f_list = sys.argv[1:]
+parser = argparse.ArgumentParser(
+                        prog='gMEu.py',
+                        description='Parse intensities from OpenMolcas computation on europium.')
+
+parser.add_argument('-f', '--filename', default='molcas.log')
+parser.add_argument('-r', '--refstate', default=50)
+parser.add_argument('-o', '--oscfac', default=1.E7)
+parser.add_argument('-xmax', '--xmax', default=2.9,help='maximum value of x-axis (eV)')
+parser.add_argument('-xmin', '--xmin', default=2.0, help='minimum value of x-axis (eV)')
+parser.add_argument('-xshift', '--xshift', default=0.0, help='Shift along x-axis (eV)')
+parser.add_argument('-of', '--oformat', default='% 10.5f')
+parser.add_argument('-w', '--width', default=0.015, help='Line width (eV)')
+parser.add_argument('-p', '--do_plot', help='Create plots for oscillator strengths', action="store_true")
+parser.add_argument('-l', '--flist', default='f_ED f_sec', help='Which information to use for osc. strength')
+args = parser.parse_args()
+
+iname=args.filename
+refstate = int(args.refstate)
+oscfac = float(args.oscfac)
+xmax = float(args.xmax)
+xmin = float(args.xmin)
+xshift = float(args.xshift)
+width = float(args.width)
+oformat= args.oformat
+do_plot = args.do_plot
+f_list = args.flist.split()
 
 def parse_tprop(prop, rfile, states, fac=1):
     for i in range(4):
@@ -44,7 +56,7 @@ def parse_tprop(prop, rfile, states, fac=1):
             try:
                 states[ind][prop] = float(words[2]) * fac
             except ValueError:
-                states[ind][prop] = -1.
+                states[ind][prop] = 0.
 
 states = [{} for ind in range(refstate)]
 for state in states:
@@ -125,7 +137,6 @@ for state in states[:refstate-1]:
         mJ += 1
 
 open('gMEu_summ.txt', 'w').write(ostr)
-
 
 # Run TheoDORE for the plots
 if do_plot:
