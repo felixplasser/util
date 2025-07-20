@@ -2,6 +2,7 @@
 """
 Remove a tag from a latex file.
 """
+# TODO: make sure it works if the tag appears several times in a line
 
 print("""
 rm_tex-tag.py <file> <tag>
