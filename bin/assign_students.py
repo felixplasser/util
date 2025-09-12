@@ -7,6 +7,12 @@ Assign students to experiments using constraints.
 from random import randint
 
 class student:
+    mxo = 1
+    mxi = 1
+    mxp = 1
+    mxa = 1
+    mxc = 1
+
     def __init__(self, csvline):
         words = csvline.split(',')
         self.fname = words[0]
@@ -18,6 +24,36 @@ class student:
         outstr  = "%s %s (%s)"%(self.fname, self.lname, self.ID)
         #outstr += ": %s %s %s %s"%(self.experiments[0], self.experiments[1], self.experiments[2], self.experiments[3])
         return outstr
+
+    def check(self, experiment):
+        """
+        Check if a student can do a given experiment.
+        """
+        norganic = 0
+        ninorganic = 0
+        nphys = 0
+        nana = 0
+        ncomp = 0
+        for e in self.experiments:
+            if e.organic:   norganic += 1
+            if e.inorganic: ninorganic += 1
+            if e.physical:  nphys += 1
+            if e.ana:       nana +=1
+            if e.comp:      ncomp += 1
+
+        if experiment.organic:   norganic += 1
+        if experiment.inorganic: ninorganic += 1
+        if experiment.physical:  nphys += 1
+        if experiment.ana:       nana += 1
+        if experiment.comp:      ncomp += 1
+
+        if norganic > self.mxo:   return False
+        if ninorganic > self.mxi: return False
+        if nphys > self.mxp:      return False
+        if nana  > self.mxa:      return False
+        if ncomp > self.mxc:      return False
+
+        return True
 
 class student_list:
     def __init__(self):
@@ -31,6 +67,11 @@ class student_list:
             ID = s.ID
             self.IDs         += [ID]
             self.students[ID] = s
+
+    def report(self):
+        print("\n*** Report over students ***")
+        for ID in self.IDs:
+            print(self.students[ID], [str(e) for e in self.students[ID].experiments])
 
 ###
 
@@ -52,11 +93,11 @@ class exp:
         if len(self.IDs) >= self.nmax:
             return False
         else:
-            return True
+            return student.check(self)
 
-    def add(self, ID, slist):
-        self.IDs += [ID]
-        slist.students[ID].experiments += ['xx']
+    def add(self, student):
+        self.IDs += [student.ID]
+        student.experiments += [self]
 
 class comp_mod(exp):
     organic   = True
@@ -76,13 +117,14 @@ class drug_scaff(exp):
 class xray(exp):
     inorganic = True
     comp      = True
-    nmax      = 12
+    nmax      = 8
 
     def __str__(self):
         return 'X-ray'
 
 class paracetamol(exp):
     physical  = True
+    #organic   = True # TODO: temp
     nmax      = 8
 
     def __str__(self):
@@ -94,36 +136,55 @@ class block:
     def __init__(self, experiments, slist, bi):
         self.experiments = experiments
         self.slist       = slist
-        self.IDs         = [ID for ID in slist.IDs]
+        self.assigned    = [False for ID in slist.IDs]
         self.bi          = bi
 
     def assign(self):
         for exp in self.experiments:
-            for i, ID in enumerate(self.IDs):
-                if exp.check(ID):
-                    exp.add(self.IDs.pop(i), self.slist)
+            for i, ID in enumerate(self.slist.IDs):
+                if self.assigned[i]:
+                    continue
+                elif exp.check(slist.students[ID]):
+                    exp.add(slist.students[ID])
+                    self.assigned[i] = True
 
     def report(self):
         for exp in self.experiments:
             print("\n*** Experiment %s (%s) ***"%(exp, self.bi))
+            print("  Number of students: %i"%len(exp.IDs))
             for ID in exp.IDs:
                 print(self.slist.students[ID])
 
         print("\n*** Not assigned (%s) ***"%self.bi)
-        for ID in self.IDs:
-            print(self.slist.students[ID])
+        for i, yn in enumerate(self.assigned):
+            if not yn:
+                print(self.slist.students[self.slist.IDs[i]])
 ###
 
 if __name__=='__main__':
     slist = student_list()
-    slist.read_csv('mini.csv')
+    slist.read_csv('CMC027_students.csv')
 
     exps_1a = [comp_mod(), drug_scaff(), xray(), paracetamol()]
     block_1a = block(exps_1a, slist, '1a')
     block_1a.assign()
     block_1a.report()
 
-    exps_2a = [comp_mod(), drug_scaff(), xray(), paracetamol()]
-    block_2a = block(exps_2a, slist, '2a')
-    block_2a.assign()
-    block_2a.report()
+    slist.IDs.reverse()
+
+    exps_1b = [comp_mod(), drug_scaff(), xray(), paracetamol()]
+    block_1b = block(exps_1b, slist, '1b')
+    block_1b.assign()
+    block_1b.report()
+
+    #exps_2a = [comp_mod(), drug_scaff(), xray(), paracetamol()]
+    #block_2a = block(exps_2a, slist, '2a')
+    #block_2a.assign()
+    #block_2a.report()
+
+    #exps_2b = [comp_mod(), drug_scaff(), xray(), paracetamol()]
+    #block_2b = block(exps_2b, slist, '2b')
+    #block_2b.assign()
+    #block_2b.report()
+
+    slist.report()
