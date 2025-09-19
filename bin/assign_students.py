@@ -7,10 +7,11 @@ Assign students to experiments using constraints.
 from random import randint
 
 class student:
-    mxo = 1
     mxi = 1
+    mxo = 1
     mxp = 1
     mxa = 1
+    mxb = 1
     mxc = 1
 
     def __init__(self, csvline):
@@ -80,6 +81,7 @@ class exp:
     organic   = False
     physical  = False
     ana       = False
+    bio       = False
     comp      = False
     nmax      = 0
 
@@ -99,20 +101,59 @@ class exp:
         self.IDs += [student.ID]
         student.experiments += [self]
 
+# Semester 1
+
+class drug_scaff(exp):
+    organic   = True
+    nmax      = 8
+
+    def __str__(self):
+        return 'Scaffolds in drug devel.'
+
+class green_cross(exp):
+    organic   = True
+    nmax      = 8
+
+    def __str__(self):
+        return 'Green catalytic cross coupling.'
+
 class comp_mod(exp):
     organic   = True
     comp      = True
     nmax      = 8
 
     def __str__(self):
-        return 'Comp. Mod.'
+        return 'Comp. modelling'
 
-class drug_scaff(exp):
-    organic   = True
-    nmax      = 6
+class prot_lig(exp):
+    bio  = True
+    nmax = 8
 
     def __str__(self):
-        return 'Scaffolds'
+        return 'Protein-ligand binding'
+
+class cell_resp(exp): # also Semester 2
+    bio  = True
+    nmax = 8
+
+    def __str__(self):
+        return 'Cell responses'
+
+class thiamine(exp):
+    ana  = True
+    nmax = 8
+
+    def __str__(self):
+        return 'Thiamine content'
+
+class hplc(exp):
+    ana  = True
+    nmax = 8
+
+    def __str__(self):
+        return 'HPLC'
+
+# Semester 2
 
 class xray(exp):
     inorganic = True
@@ -122,13 +163,40 @@ class xray(exp):
     def __str__(self):
         return 'X-ray'
 
+class zeolites(exp):
+    inorganic = True
+    nmax      = 8
+
+    def __str__(self):
+        return 'Zeolites'
+
+class fingerprint(exp):
+    inorganic = True
+    nmax      = 8
+
+    def __str__(self):
+        return 'Fingerprinting reagents'
+
+class salen(exp):
+    inorganic = True
+    nmax      = 8
+
+    def __str__(self):
+        return 'M-SALEN complexes'
+
 class paracetamol(exp):
     physical  = True
-    #organic   = True # TODO: temp
     nmax      = 8
 
     def __str__(self):
         return 'Paracetamol'
+
+class tio2(exp):
+    physical = True
+    nmax     = 8
+
+    def __str__(self):
+        return 'Properties of TiO2'
 
 ###
 
