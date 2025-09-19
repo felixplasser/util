@@ -27,7 +27,7 @@ class student:
 
     def check(self, experiment):
         """
-        Check if a student can do a given experiment.
+        Check if a student can be assigned a given experiment.
         """
         norganic = 0
         ninorganic = 0
