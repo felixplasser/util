@@ -4,8 +4,6 @@
 Assign students to experiments using constraints.
 """
 
-from random import randint
-
 class student:
     mxi = 1
     mxo = 1
