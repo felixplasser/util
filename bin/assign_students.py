@@ -22,7 +22,6 @@ class student:
 
     def __str__(self):
         outstr  = "%s %s (%s) - %s"%(self.fname, self.lname, self.ID, self.mod)
-        #outstr += ": %s %s %s %s"%(self.experiments[0], self.experiments[1], self.experiments[2], self.experiments[3])
         return outstr
 
     def check(self, experiment):
@@ -151,7 +150,6 @@ class exp:
     ana       = False
     bio       = False
     comp      = False
-    CMC027    = False
     nmax      = 0
     expname   = ''
 
