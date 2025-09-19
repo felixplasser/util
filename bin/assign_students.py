@@ -13,6 +13,7 @@ class student:
     mxa = 1
     mxb = 1
     mxc = 1
+    mod = 'CMC'
 
     def __init__(self, csvline):
         words = csvline.split(',')
@@ -22,7 +23,7 @@ class student:
         self.experiments = []
 
     def __str__(self):
-        outstr  = "%s %s (%s)"%(self.fname, self.lname, self.ID)
+        outstr  = "%s %s (%s) - %s"%(self.fname, self.lname, self.ID, self.mod)
         #outstr += ": %s %s %s %s"%(self.experiments[0], self.experiments[1], self.experiments[2], self.experiments[3])
         return outstr
 
@@ -34,37 +35,71 @@ class student:
         ninorganic = 0
         nphys = 0
         nana = 0
+        nbio = 0
         ncomp = 0
         for e in self.experiments:
+            if e.__str__() == experiment.__str__(): return False # Don't assign the same experiment twice
             if e.organic:   norganic += 1
             if e.inorganic: ninorganic += 1
             if e.physical:  nphys += 1
-            if e.ana:       nana +=1
+            if e.ana:       nana += 1
+            if e.bio:       nbio += 1
             if e.comp:      ncomp += 1
 
         if experiment.organic:   norganic += 1
         if experiment.inorganic: ninorganic += 1
         if experiment.physical:  nphys += 1
         if experiment.ana:       nana += 1
+        if experiment.bio:       nbio += 1
         if experiment.comp:      ncomp += 1
+
+        print(norganic, ninorganic, nphys, nana, nbio, ncomp)
 
         if norganic > self.mxo:   return False
         if ninorganic > self.mxi: return False
         if nphys > self.mxp:      return False
         if nana  > self.mxa:      return False
+        if nbio  > self.mxb:      return False
         if ncomp > self.mxc:      return False
 
         return True
+
+class CMC029_student(student):
+    mxi = 1
+    mxo = 2
+    mxp = 1
+    mxa = 0
+    mxb = 0
+    mxc = 2
+    mod = 'CMC029'
+
+class CMC027_student(student):
+    mxi = 1
+    mxo = 1
+    mxp = 0
+    mxa = 0
+    mxb = 2
+    mxc = 0
+    mod = 'CMC027'
+
+class CMC026_student(student):
+    mxi = 1
+    mxo = 1
+    mxp = 1
+    mxa = 1
+    mxb = 1
+    mxc = 1
+    mod = 'CMC026'
 
 class student_list:
     def __init__(self):
         self.students = {}
         self.IDs      = []
 
-    def read_csv(self, rfile):
+    def read_csv(self, rfile, stype):
         print("Reading %s ..."%rfile)
         for line in open(rfile, 'r').readlines()[1:]:
-            s  = student(line)
+            s  = stype(line)
             ID = s.ID
             self.IDs         += [ID]
             self.students[ID] = s
@@ -84,6 +119,7 @@ class exp:
     bio       = False
     comp      = False
     nmax      = 0
+    expname   = ''
 
     def __init__(self):
         self.IDs  = []
@@ -101,57 +137,46 @@ class exp:
         self.IDs += [student.ID]
         student.experiments += [self]
 
+    def __str__(self):
+        return self.expname
+
 # Semester 1
 
 class drug_scaff(exp):
     organic   = True
     nmax      = 8
-
-    def __str__(self):
-        return 'Scaffolds in drug devel.'
+    expname   = 'Scaffolds in drug devel.'
 
 class green_cross(exp):
     organic   = True
     nmax      = 8
-
-    def __str__(self):
-        return 'Green catalytic cross coupling.'
+    expname   = 'Green catalytic cross coupling.'
 
 class comp_mod(exp):
     organic   = True
     comp      = True
     nmax      = 8
-
-    def __str__(self):
-        return 'Comp. modelling'
+    expname   = 'Comp. modelling'
 
 class prot_lig(exp):
     bio  = True
     nmax = 8
-
-    def __str__(self):
-        return 'Protein-ligand binding'
+    expname   = 'Protein-ligand binding'
 
 class cell_resp(exp): # also Semester 2
     bio  = True
     nmax = 8
-
-    def __str__(self):
-        return 'Cell responses'
+    expname   = 'Cell responses'
 
 class thiamine(exp):
     ana  = True
     nmax = 8
-
-    def __str__(self):
-        return 'Thiamine content'
+    expname   = 'Thiamine content'
 
 class hplc(exp):
     ana  = True
     nmax = 8
-
-    def __str__(self):
-        return 'HPLC'
+    expname   = 'HPLC'
 
 # Semester 2
 
@@ -159,44 +184,32 @@ class xray(exp):
     inorganic = True
     comp      = True
     nmax      = 8
-
-    def __str__(self):
-        return 'X-ray'
+    expname   = 'X-ray'
 
 class zeolites(exp):
     inorganic = True
     nmax      = 8
-
-    def __str__(self):
-        return 'Zeolites'
+    expname   = 'Zeolites'
 
 class fingerprint(exp):
     inorganic = True
     nmax      = 8
-
-    def __str__(self):
-        return 'Fingerprinting reagents'
+    expname   = 'Fingerprinting reagents'
 
 class salen(exp):
     inorganic = True
     nmax      = 8
-
-    def __str__(self):
-        return 'M-SALEN complexes'
+    expname   = 'M-SALEN complexes'
 
 class paracetamol(exp):
     physical  = True
     nmax      = 8
-
-    def __str__(self):
-        return 'Paracetamol'
+    expname   = 'Paracetamol'
 
 class tio2(exp):
     physical = True
     nmax     = 8
-
-    def __str__(self):
-        return 'Properties of TiO2'
+    expname   = 'Properties of TiO2'
 
 ###
 
@@ -231,16 +244,20 @@ class block:
 
 if __name__=='__main__':
     slist = student_list()
-    slist.read_csv('CMC027_students.csv')
+    slist.read_csv('CMC029_participants.csv', CMC029_student)
+    slist.read_csv('CMC027_participants.csv', CMC027_student)
+    slist.read_csv('CMC026_participants.csv', CMC026_student)
 
-    exps_1a = [comp_mod(), drug_scaff(), xray(), paracetamol()]
+
+    exps_1a = [comp_mod(), prot_lig(), cell_resp(), drug_scaff(), green_cross(), thiamine(), hplc()]
     block_1a = block(exps_1a, slist, '1a')
     block_1a.assign()
     block_1a.report()
 
-    slist.IDs.reverse()
+    #slist.IDs.reverse()
 
-    exps_1b = [comp_mod(), drug_scaff(), xray(), paracetamol()]
+    print('Second round')
+    exps_1b = [comp_mod(), prot_lig(), cell_resp(), drug_scaff(), green_cross(),  thiamine(), hplc()]
     block_1b = block(exps_1b, slist, '1b')
     block_1b.assign()
     block_1b.report()
