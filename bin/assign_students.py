@@ -20,7 +20,7 @@ class student:
         self.fname = words[0]
         self.lname = words[1]
         self.ID    = words[3]
-        self.experiments = []
+        self.experiments = 4 * [not_assigned()]
 
     def __str__(self):
         outstr  = "%s %s (%s) - %s"%(self.fname, self.lname, self.ID, self.mod)
@@ -38,7 +38,9 @@ class student:
         nbio = 0
         ncomp = 0
         for e in self.experiments:
+            if e is None: continue
             if e.expname == experiment.expname: return False # Don't assign the same experiment twice
+
             if e.organic:   norganic += 1
             if e.inorganic: ninorganic += 1
             if e.physical:  nphys += 1
@@ -124,7 +126,7 @@ class student_list:
 
     def write_csv(self, cname='CMC02x.csv'):
         f = open(cname, 'w')
-        f.write('Module,Option,ID,First name,Last name,Block 1a,Block 1b\n')
+        f.write('Module,Option,ID,First name,Last name,Block 1a,Block 1b,Block 2a,Block 2b\n')
         for ID in self.IDs:
             student = self.students[ID]
             outstr  = student.mod[:6] + ','
@@ -136,6 +138,8 @@ class student_list:
             outstr += student.lname + ','
             outstr += student.experiments[0].lecturer + ','
             outstr += student.experiments[1].lecturer + ','
+            outstr += student.experiments[2].lecturer + ','
+            outstr += student.experiments[3].lecturer
             outstr += '\n'
             f.write(outstr)
         f.close()
@@ -167,12 +171,16 @@ class exp:
         else:
             return student.check(self)
 
-    def add(self, student):
+    def add(self, student, expi):
         self.IDs += [student.ID]
-        student.experiments += [self]
+        student.experiments[expi] = self
 
     def __str__(self):
-        return self.lecturer
+        return self.lecturer + ": " + self.expname
+
+class not_assigned(exp):
+    expname   = 'N/A'
+    lecturer  = 'N/A'
 
 # Semester 1
 
@@ -224,42 +232,49 @@ class hplc(exp):
 class xray(exp):
     inorganic = True
     comp      = True
-    nmax      = 8
+    nmax      = 5
     expname   = 'X-ray'
+    lecturer  = 'Elsegood/Smith'
 
 class zeolites(exp):
     inorganic = True
     nmax      = 8
     expname   = 'Zeolites'
+    lecturer  = 'Dann/Kondrat'
 
 class fingerprint(exp):
     inorganic = True
     nmax      = 8
     expname   = 'Fingerprinting reagents'
+    lecturer  = 'Kelly'
 
 class salen(exp):
     inorganic = True
-    nmax      = 8
+    nmax      = 6
     expname   = 'M-SALEN complexes'
+    lecturer  = 'Fernandez-Mato'
 
 class paracetamol(exp):
     physical  = True
     nmax      = 8
     expname   = 'Paracetamol'
+    lecturer  = 'McPherson/Claxton/Heaton'
 
 class tio2(exp):
     physical = True
     nmax     = 8
-    expname   = 'Properties of TiO2'
+    expname  = 'Properties of TiO2'
+    lecturer = 'Ibraimo-Patia/Heaton'
 
 ###
 
 class block:
-    def __init__(self, slist, bi):
+    def __init__(self, slist, bi, expi):
         self.experiments = []
         self.slist       = slist
         self.assigned    = [False for ID in slist.IDs]
-        self.bi          = bi
+        self.bi          = bi   # Block index
+        self.expi        = expi # Experiment index for student
 
     def assign(self, experiments, module='CMC'):
         for exp in experiments:
@@ -271,7 +286,7 @@ class block:
                     continue
 
                 if exp.check(slist.students[ID]):
-                    exp.add(slist.students[ID])
+                    exp.add(slist.students[ID], self.expi)
                     self.assigned[i] = True
         self.experiments += experiments
 
@@ -290,8 +305,9 @@ class block:
 ###
 
 def assign_S1(slist):
-    block_1a = block(slist, '1a')
-    block_1b = block(slist, '1b')
+    print("\n+++ Starting S1 +++")
+    block_1a = block(slist, '1a', 0)
+    block_1b = block(slist, '1b', 1)
 
     # Manual assignments (both blocks)
     # Analytical
@@ -314,14 +330,37 @@ def assign_S1(slist):
     block_1b.assign(exps_1b)
     block_1b.report()
 
-    slist.write_csv('S1_assignments.csv')
+    #slist.write_csv('S1_assignments.csv')
+
+def assign_S2(slist):
+    print("\n+++ Starting S2 +++")
+    block_2a = block(slist, '2a', 2)
+    block_2b = block(slist, '2b', 3)
+
+    # CMC027
+    block_2a.assign([cell_resp(7)], 'CMC027')
+    block_2b.assign([cell_resp(7)], 'CMC027')
+
+    # Use custom order to get all slots filled
+
+    block_2a.assign([xray(), zeolites(6), fingerprint(6), salen()])
+    block_2b.assign([xray()])
+
+    # Then inorganic
+    block_2a.assign([paracetamol(7), tio2(7)])
+    block_2b.assign([zeolites(5), fingerprint(5), salen(), paracetamol(8), tio2(8)])
+
+    block_2a.report()
+    block_2b.report()
 
 if __name__=='__main__':
     slist = student_list()
     slist.read_csv('CMC029_participants.csv', CMC029_student)
+    slist.read_csv('CMC027_participants.csv', CMC027_student)
     slist.read_csv('CMC026-004_participants.csv', CMC026_004_student)
     slist.read_csv('CMC026-007_participants.csv', CMC026_007_student)
-    slist.read_csv('CMC027_participants.csv', CMC027_student)
 
     assign_S1(slist)
-    slist.report()
+    assign_S2(slist)
+    slist.write_csv('25CMC02x_assignments.csv')
+    #slist.report()
