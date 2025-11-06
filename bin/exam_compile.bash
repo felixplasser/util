@@ -21,5 +21,5 @@ done
 for FILE in 2?CM*tex
 do
     echo " *** Marks for $FILE ***"
-    /Users/cmfp2/Teaching/exam_marks.py $FILE
+    exam_marks.py $FILE
 done
