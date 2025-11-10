@@ -53,7 +53,8 @@ quotes = [
 ("The only way to know what’s happening in the world is to wade into cesspools on X, dodge 10 conspiracy theories, and emerge victorious with one nugget of actual true information.", "Nellie Bowles"),
 ("A new scientific truth does not triumph by convincing its opponents and making them see the light, but rather because its opponents eventually die and a new generation grows up that is familiar with it.", "Max Planck"),
 ("The art of life is a constant readjustment to our surroundings.", "Kakuzo Okakura"),
-("Wherever you are, be there totally.", "Eckhart Tolle")
+("Wherever you are, be there totally.", "Eckhart Tolle"),
+("Dream the impossible dream and the world will not grind you under, it will lift you up.","Terence McKenna")
 ]
 
 def cowsay(cowstr, wd=40):
