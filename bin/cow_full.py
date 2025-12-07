@@ -54,7 +54,10 @@ quotes = [
 ("A new scientific truth does not triumph by convincing its opponents and making them see the light, but rather because its opponents eventually die and a new generation grows up that is familiar with it.", "Max Planck"),
 ("The art of life is a constant readjustment to our surroundings.", "Kakuzo Okakura"),
 ("Wherever you are, be there totally.", "Eckhart Tolle"),
-("Dream the impossible dream and the world will not grind you under, it will lift you up.","Terence McKenna")
+("Dream the impossible dream and the world will not grind you under, it will lift you up.","Terence McKenna"),
+("You don't need to be a hero to do heroic things.", "Lego Starwars"),
+("The things you think about determine the quality of your mind. Your soul takes on the color of your thoughts.","Marcus Aurelius"),
+("We do these things not becausey they are easy, but because they are hard.","John F. Kennedy")
 ]
 
 def cowsay(cowstr, wd=40):
