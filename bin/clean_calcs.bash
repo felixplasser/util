@@ -2,8 +2,15 @@
 
 echo "$0 - Clean scratch files from computations"
 
+
 # General
 rmi -name 'core.[0-9]*'
+
+# CREST
+rmi -name 'gfnff*'
+
+# Gaussian
+rmi -name '*.chk'
 
 # Q-Chem
 rmi -name 'qarchive.h5'
