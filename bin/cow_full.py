@@ -57,7 +57,8 @@ quotes = [
 ("Dream the impossible dream and the world will not grind you under, it will lift you up.","Terence McKenna"),
 ("You don't need to be a hero to do heroic things.", "Lego Starwars"),
 ("The things you think about determine the quality of your mind. Your soul takes on the color of your thoughts.","Marcus Aurelius"),
-("We do these things not becausey they are easy, but because they are hard.","John F. Kennedy")
+("We do these things not because they are easy, but because they are hard.","John F. Kennedy"),
+("Pick a problem that intrinsically excites you and set out to make a difference.","Steve Liddle")
 ]
 
 def cowsay(cowstr, wd=40):
